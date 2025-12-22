@@ -22,8 +22,8 @@ export const generateThemeJson = (state) => {
     settings: {
       appearanceTools: true,
       layout: {
-        contentSize: '800px',
-        wideSize: '1200px'
+        contentSize: state.spacing.contentSize || '1140px',
+        wideSize: state.spacing.wideSize || '1140px'
       },
       color: {
         defaultPalette: false,

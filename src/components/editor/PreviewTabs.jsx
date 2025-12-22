@@ -1,15 +1,4 @@
-import { useMemo, useState } from 'react';
-
-const TabButton = ({ label, active, onClick }) => (
-  <button
-    onClick={onClick}
-    className={`rounded-lg px-4 py-2 text-sm font-semibold ${
-      active ? 'bg-slate-900 text-white' : 'bg-white text-slate-700'
-    } shadow-sm ring-1 ring-slate-200`}
-  >
-    {label}
-  </button>
-);
+import { useMemo } from 'react';
 
 const FontsPreview = () => (
   <div className="space-y-3">
@@ -26,51 +15,128 @@ const FontsPreview = () => (
   </div>
 );
 
-const HeadersPreview = () => (
-  <div className="space-y-6">
-    <div className="has-primary-background-color rounded-2xl p-8 shadow-sm">
-      <p className="text-sm uppercase tracking-[0.2em]">Layout A</p>
-      <h2 className="mt-2 text-3xl font-bold">Bold hero using primary color</h2>
-      <p className="mt-2 max-w-2xl text-lg text-white/80">
-        Buttons pull custom radius and shadow tokens for a consistent look across the system.
-      </p>
-      <button
-        className="mt-4 px-4 py-2 font-semibold"
+const HeadersPreview = ({ colors }) => {
+  const primary = colors.find((c) => c.slug === 'primary');
+  const primaryContrast = primary?.contrast || 'white';
+
+  return (
+    <div className="space-y-6">
+      <div
+        className="wp-block-group alignfull has-primary-background-color"
         style={{
-          borderRadius: 'var(--custom--radius)',
-          boxShadow: 'var(--custom--shadow)',
-          backgroundColor: 'var(--wp--preset--color--dark)',
-          color: 'var(--wp--preset--color--white)'
+          padding: '64px 24px',
+          color: `var(--wp--preset--color--${primaryContrast})`,
+          textAlign: 'center'
         }}
       >
-        Primary Action
-      </button>
-    </div>
+        <p
+          className="eyebrow"
+          style={{
+            margin: '0 auto 12px',
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            fontWeight: 600
+          }}
+        >
+          Elevated headline
+        </p>
+        <h1 style={{ margin: '0 auto 12px', maxWidth: '840px' }}>Large Centered Text</h1>
+        <p
+          className="has-large-font-size"
+          style={{
+            margin: '0 auto 24px',
+            maxWidth: '760px',
+            opacity: 0.9,
+            lineHeight: 1.5
+          }}
+        >
+          A single WP Group with eyebrow, headline, supporting paragraph, and paired buttons. Uses
+          the Primary background and respects your selected contrast color.
+        </p>
+        <div
+          className="wp-block-buttons"
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '12px',
+            flexWrap: 'wrap'
+          }}
+        >
+          <div className="wp-block-button">
+            <a
+              className="wp-block-button__link has-primary-background-color"
+              style={{
+                color: `var(--wp--preset--color--${primaryContrast})`,
+                padding: '12px 20px',
+                borderRadius: 'var(--custom--radius)',
+                boxShadow: 'var(--custom--shadow)',
+                border: '1px solid transparent'
+              }}
+            >
+              Primary Button
+            </a>
+          </div>
+          <div className="wp-block-button is-style-outline">
+            <a
+              className="wp-block-button__link"
+              style={{
+                color: `var(--wp--preset--color--${primaryContrast})`,
+                padding: '12px 20px',
+                borderRadius: 'var(--custom--radius)',
+                boxShadow: 'var(--custom--shadow)',
+                border: `1px solid var(--wp--preset--color--${primaryContrast})`
+              }}
+            >
+              Outline Button
+            </a>
+          </div>
+        </div>
+      </div>
 
-    <div className="grid gap-6 rounded-2xl bg-slate-100 p-6 shadow-sm md:grid-cols-2">
-      <div className="h-full rounded-xl bg-slate-300" />
-      <div className="has-secondary-background-color rounded-xl p-6">
-        <p className="text-xs uppercase tracking-[0.2em]">Layout B</p>
-        <h3 className="mt-2 text-2xl font-bold">Split hero with secondary</h3>
-        <p className="mt-2 text-white/80">
-          Content area inherits the text contrast you selected in the Colors section.
+      <div className="has-primary-background-color rounded-2xl p-8 shadow-sm">
+        <p className="text-sm uppercase tracking-[0.2em]">Layout A</p>
+        <h2 className="mt-2 text-3xl font-bold">Bold hero using primary color</h2>
+        <p className="mt-2 max-w-2xl text-lg text-white/80">
+          Buttons pull custom radius and shadow tokens for a consistent look across the system.
         </p>
         <button
           className="mt-4 px-4 py-2 font-semibold"
           style={{
             borderRadius: 'var(--custom--radius)',
-            borderWidth: 'var(--custom--border-width)',
-            borderStyle: 'var(--custom--border-style)',
-            borderColor: 'var(--wp--preset--color--light)',
-            color: 'var(--wp--preset--color--light)'
+            boxShadow: 'var(--custom--shadow)',
+            backgroundColor: 'var(--wp--preset--color--dark)',
+            color: 'var(--wp--preset--color--white)'
           }}
         >
-          Ghost Button
+          Primary Action
         </button>
       </div>
+
+      <div className="grid gap-6 rounded-2xl bg-slate-100 p-6 shadow-sm md:grid-cols-2">
+        <div className="h-full rounded-xl bg-slate-300" />
+        <div className="has-secondary-background-color rounded-xl p-6">
+          <p className="text-xs uppercase tracking-[0.2em]">Layout B</p>
+          <h3 className="mt-2 text-2xl font-bold">Split hero with secondary</h3>
+          <p className="mt-2 text-white/80">
+            Content area inherits the text contrast you selected in the Colors section.
+          </p>
+          <button
+            className="mt-4 px-4 py-2 font-semibold"
+            style={{
+              borderRadius: 'var(--custom--radius)',
+              borderWidth: 'var(--custom--border-width)',
+              borderStyle: 'var(--custom--border-style)',
+              borderColor: 'var(--wp--preset--color--light)',
+              color: 'var(--wp--preset--color--light)'
+            }}
+          >
+            Ghost Button
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const LayoutsPreview = ({ defaultGap }) => (
   <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
@@ -150,15 +216,13 @@ const ComponentsPreview = ({ colors }) => {
   );
 };
 
-const PreviewTabs = ({ state }) => {
-  const [activeTab, setActiveTab] = useState('Fonts');
-
+const PreviewTabs = ({ state, activeTab }) => {
   const renderContent = () => {
     switch (activeTab) {
       case 'Fonts':
         return <FontsPreview />;
       case 'Headers':
-        return <HeadersPreview />;
+        return <HeadersPreview colors={state.colors} />;
       case 'Layouts':
         return <LayoutsPreview defaultGap={state.spacing.defaultGap} />;
       case 'Components':
@@ -169,18 +233,8 @@ const PreviewTabs = ({ state }) => {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap gap-2">
-        {['Fonts', 'Headers', 'Layouts', 'Components'].map((tab) => (
-          <TabButton
-            key={tab}
-            label={tab}
-            active={tab === activeTab}
-            onClick={() => setActiveTab(tab)}
-          />
-        ))}
-      </div>
-      <div className="rounded-2xl bg-slate-50 p-6 shadow-inner">{renderContent()}</div>
+    <div className="wp-block-group is-layout-constrained">
+      {renderContent()}
     </div>
   );
 };

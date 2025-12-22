@@ -55,7 +55,9 @@ export const initialDesignSystem = {
       80: '6rem',
       90: '7rem'
     },
-    defaultGap: '30'
+    defaultGap: '30',
+    contentSize: '1140px',
+    wideSize: '1140px'
   },
   customStyles: {
     shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',

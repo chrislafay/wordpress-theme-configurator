@@ -23,6 +23,8 @@ const Editor = () => {
   const initialized = useRef(false);
   const [editingName, setEditingName] = useState(false);
   const [tempName, setTempName] = useState('');
+  const [activeTab, setActiveTab] = useState('Fonts');
+  const [showDownloadMenu, setShowDownloadMenu] = useState(false);
 
   useEffect(() => {
     if (project) {
@@ -169,29 +171,63 @@ const Editor = () => {
         />
       </aside>
 
-      <main className="flex-1 overflow-y-auto p-6">
-        <div className="mx-auto flex max-w-5xl items-center justify-between pb-4">
-          <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Live Preview</p>
-            <h1 className="text-2xl font-semibold text-slate-900">Configurator</h1>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => handleExport('theme')}
-              className="btn btn-secondary flex items-center gap-2"
-            >
-              <Download size={16} />
-              theme.json
-            </button>
-            <button onClick={() => handleExport('scss')} className="btn btn-primary flex items-center gap-2">
-              <Download size={16} />
-              SCSS
-            </button>
+      <main className="relative flex-1 overflow-y-auto">
+        <div className="sticky top-0 z-10 border-b border-slate-200 bg-white/90 backdrop-blur">
+          <div className="flex w-full items-center justify-between px-6 py-3">
+            <span className="text-sm font-semibold text-slate-800">Live Preview</span>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-0">
+                {['Fonts', 'Headers', 'Layouts', 'Components'].map((tab, index) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`border-l border-slate-200 px-3 py-2 text-sm font-semibold first:border-l-0 ${
+                      activeTab === tab
+                        ? 'rounded-md bg-slate-900 text-white'
+                        : 'bg-transparent text-slate-700 hover:bg-slate-100'
+                    }`}
+                  >
+                    {tab}
+                  </button>
+                ))}
+              </div>
+              <div className="relative">
+                <button
+                  onClick={() => setShowDownloadMenu((prev) => !prev)}
+                  className="btn btn-secondary flex items-center gap-2"
+                >
+                  <Download size={16} />
+                  Download
+                </button>
+                {showDownloadMenu && (
+                  <div className="absolute right-0 mt-2 w-40 rounded-lg border border-slate-200 bg-white shadow-lg">
+                    <button
+                      className="block w-full px-3 py-2 text-left text-sm hover:bg-slate-100"
+                      onClick={() => {
+                        handleExport('theme');
+                        setShowDownloadMenu(false);
+                      }}
+                    >
+                      theme.json
+                    </button>
+                    <button
+                      className="block w-full px-3 py-2 text-left text-sm hover:bg-slate-100"
+                      onClick={() => {
+                        handleExport('scss');
+                        setShowDownloadMenu(false);
+                      }}
+                    >
+                      SCSS
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="mx-auto max-w-5xl">
-          <PreviewTabs state={editorState} />
+        <div className="w-full">
+          <PreviewTabs state={editorState} activeTab={activeTab} />
         </div>
       </main>
     </div>

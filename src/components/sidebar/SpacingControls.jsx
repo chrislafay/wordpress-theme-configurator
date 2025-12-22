@@ -41,6 +41,26 @@ const SpacingControls = ({ spacing, onChange }) => {
           ))}
         </select>
       </div>
+      <div className="grid grid-cols-2 gap-3">
+        <div className="space-y-1">
+          <label className="label">Content Size (alignfull)</label>
+          <input
+            className="input"
+            value={spacing.contentSize}
+            onChange={(e) => onChange({ ...spacing, contentSize: e.target.value })}
+            placeholder="1140px"
+          />
+        </div>
+        <div className="space-y-1">
+          <label className="label">Wide Size (alignwide)</label>
+          <input
+            className="input"
+            value={spacing.wideSize}
+            onChange={(e) => onChange({ ...spacing, wideSize: e.target.value })}
+            placeholder="1140px"
+          />
+        </div>
+      </div>
     </Accordion>
   );
 };

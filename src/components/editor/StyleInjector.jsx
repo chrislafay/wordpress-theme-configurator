@@ -41,6 +41,7 @@ const StyleInjector = ({ state }) => {
     <style>{`
 ${fontImport}
 :root {
+  --preview-padding: 0px;
 ${colorVars}
   --wp--preset--font-family--heading: "${heading}", sans-serif;
   --wp--preset--font-family--body: "${body}", sans-serif;
@@ -51,10 +52,33 @@ ${spacingVars}
   --custom--border-width: ${state.customStyles.borderWidth};
   --custom--border-style: ${state.customStyles.borderStyle};
   --gap-default: var(--wp--preset--spacing--${state.spacing.defaultGap});
+  --wp--style--global--content-size: ${state.spacing.contentSize};
+  --wp--style--global--wide-size: ${state.spacing.wideSize};
 }
 
 body, p { font-family: var(--wp--preset--font-family--body); }
 h1, h2, h3, h4, h5, h6 { font-family: var(--wp--preset--font-family--heading); }
+h1 { font-size: var(--wp--preset--font-size--xx-large); }
+h2 { font-size: var(--wp--preset--font-size--x-large); }
+h3 { font-size: var(--wp--preset--font-size--large); }
+h4 { font-size: var(--wp--preset--font-size--medium); }
+h5 { font-size: var(--wp--preset--font-size--small); }
+h6 { font-size: var(--wp--preset--font-size--x-small); }
+
+/* Allow alignfull blocks to span the full preview width (inside padded container) */
+.alignfull {
+  width: 100%;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  max-width: none !important;
+  display: block;
+}
+
+.is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+  max-width: var(--wp--style--global--content-size);
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
 
 ${utilityClasses}
     `}</style>
