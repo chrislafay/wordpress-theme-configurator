@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, Download } from 'lucide-react';
+import { ArrowLeft, Download, Pencil } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
-import ProjectSettings from '../components/sidebar/ProjectSettings';
 import ColorControls from '../components/sidebar/ColorControls';
 import TypographyControls from '../components/sidebar/TypographyControls';
 import SpacingControls from '../components/sidebar/SpacingControls';
@@ -10,6 +9,7 @@ import CustomStyles from '../components/sidebar/CustomStyles';
 import StyleInjector from '../components/editor/StyleInjector';
 import PreviewTabs from '../components/editor/PreviewTabs';
 import { generateSCSS, generateThemeJson } from '../utils/exporters';
+import { slugify } from '../utils/slugify';
 
 const cloneState = (data) =>
   typeof structuredClone === 'function' ? structuredClone(data) : JSON.parse(JSON.stringify(data));
@@ -21,6 +21,8 @@ const Editor = () => {
 
   const [editorState, setEditorState] = useState(null);
   const initialized = useRef(false);
+  const [editingName, setEditingName] = useState(false);
+  const [tempName, setTempName] = useState('');
 
   useEffect(() => {
     if (project) {
@@ -60,6 +62,40 @@ const Editor = () => {
     );
   }
 
+  const formatRelativeTime = (isoDate) => {
+    const diffSeconds = Math.max(0, (Date.now() - new Date(isoDate).getTime()) / 1000);
+    if (diffSeconds < 60) return 'Less than a minute ago';
+    if (diffSeconds < 600) return 'Less than 10 minutes ago';
+    if (diffSeconds < 3600) return `${Math.round(diffSeconds / 60)} minutes ago`;
+    if (diffSeconds < 7200) return 'About an hour ago';
+    if (diffSeconds < 86400) return `${Math.round(diffSeconds / 3600)} hours ago`;
+    if (diffSeconds < 172800) return 'About a day ago';
+    return `${Math.round(diffSeconds / 86400)} days ago`;
+  };
+
+  const startEditingName = () => {
+    setTempName(editorState.project.name);
+    setEditingName(true);
+  };
+
+  const saveName = () => {
+    const nextName = tempName.trim() || 'Untitled Project';
+    setEditorState((prev) => ({
+      ...prev,
+      project: { ...prev.project, name: nextName, slug: slugify(nextName) }
+    }));
+    setEditingName(false);
+  };
+
+  const handleNameKey = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      saveName();
+    } else if (event.key === 'Escape') {
+      setEditingName(false);
+    }
+  };
+
   const handleExport = (type) => {
     const content =
       type === 'theme'
@@ -75,13 +111,39 @@ const Editor = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-100">
+    <div className="flex h-screen overflow-hidden bg-slate-100">
       <StyleInjector state={editorState} />
-      <aside className="w-full max-w-md space-y-4 overflow-y-auto border-r border-slate-200 bg-white p-5">
-        <div className="flex items-center justify-between">
-          <div>
+      <aside className="w-full max-w-md overflow-y-auto border-r border-slate-200 bg-white p-5">
+        <div className="mb-2 flex items-start justify-between gap-3 border-b border-slate-200 pb-3">
+          <div className="flex-1">
             <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Editor</p>
-            <h2 className="text-lg font-semibold text-slate-900">{editorState?.project.name}</h2>
+            <div className="mt-1 flex items-center gap-2">
+              {editingName ? (
+                <input
+                  className="input"
+                  autoFocus
+                  value={tempName}
+                  onChange={(e) => setTempName(e.target.value)}
+                  onBlur={saveName}
+                  onKeyDown={handleNameKey}
+                />
+              ) : (
+                <>
+                  <h2 className="text-lg font-semibold text-slate-900">{editorState?.project.name}</h2>
+                  <button
+                    type="button"
+                    onClick={startEditingName}
+                    className="text-slate-500 hover:text-slate-700"
+                    aria-label="Edit project name"
+                  >
+                    <Pencil size={16} />
+                  </button>
+                </>
+              )}
+            </div>
+            <p className="text-xs text-slate-500">
+              Updated {formatRelativeTime(project.lastModified)}
+            </p>
           </div>
           <Link to="/dashboard" className="btn btn-ghost flex items-center gap-2">
             <ArrowLeft size={16} />
@@ -89,13 +151,6 @@ const Editor = () => {
           </Link>
         </div>
 
-        <ProjectSettings
-          project={editorState.project}
-          lastModified={project.lastModified}
-          onChange={(changes) =>
-            setEditorState((prev) => ({ ...prev, project: { ...prev.project, ...changes } }))
-          }
-        />
         <ColorControls
           colors={editorState.colors}
           onChange={(colors) => setEditorState((prev) => ({ ...prev, colors }))}
