@@ -80,6 +80,12 @@ h6 { font-size: var(--wp--preset--font-size--x-small); }
   margin-right: auto !important;
 }
 
+.vertical-space-small {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wp--preset--spacing--20);
+}
+
 ${utilityClasses}
     `}</style>
   );

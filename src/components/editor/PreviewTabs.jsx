@@ -8,7 +8,7 @@ const FontsPreview = () => (
     <h4 className="text-xl font-semibold">Heading 4 - Typography</h4>
     <h5 className="text-lg font-semibold">Heading 5 - Harmony</h5>
     <h6 className="text-base font-semibold">Heading 6 - Details</h6>
-    <p className="text-base leading-relaxed text-slate-700">
+    <p className="text-base leading-relaxed">
       Body text using the body font. Adjust min/max fluid sizes in the sidebar to see the fluid
       type ramp update instantly. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
     </p>
@@ -18,9 +18,11 @@ const FontsPreview = () => (
 const HeadersPreview = ({ colors }) => {
   const primary = colors.find((c) => c.slug === 'primary');
   const primaryContrast = primary?.contrast || 'white';
+  const secondary = colors.find((c) => c.slug === 'secondary');
+  const secondaryContrast = secondary?.contrast || 'white';
 
   return (
-    <div className="space-y-6">
+    <>
       <div
         className="wp-block-group alignfull has-primary-background-color"
         style={{
@@ -96,7 +98,10 @@ const HeadersPreview = ({ colors }) => {
       <div className="has-primary-background-color rounded-2xl p-8 shadow-sm">
         <p className="text-sm uppercase tracking-[0.2em]">Layout A</p>
         <h2 className="mt-2 text-3xl font-bold">Bold hero using primary color</h2>
-        <p className="mt-2 max-w-2xl text-lg text-white/80">
+        <p
+          className="mt-2 max-w-2xl text-lg"
+          style={{ color: `var(--wp--preset--color--${primaryContrast})`, opacity: 0.9 }}
+        >
           Buttons pull custom radius and shadow tokens for a consistent look across the system.
         </p>
         <button
@@ -112,12 +117,21 @@ const HeadersPreview = ({ colors }) => {
         </button>
       </div>
 
-      <div className="grid gap-6 rounded-2xl bg-slate-100 p-6 shadow-sm md:grid-cols-2">
-        <div className="h-full rounded-xl bg-slate-300" />
-        <div className="has-secondary-background-color rounded-xl p-6">
+      <div
+        className="grid gap-6 rounded-2xl p-6 shadow-sm md:grid-cols-2"
+        style={{ backgroundColor: 'var(--wp--preset--color--light)' }}
+      >
+        <div
+          className="h-full rounded-xl"
+          style={{ backgroundColor: 'var(--wp--preset--color--light)', border: '1px solid var(--wp--preset--color--light)' }}
+        />
+        <div
+          className="has-secondary-background-color rounded-xl p-6"
+          style={{ color: `var(--wp--preset--color--${secondaryContrast})` }}
+        >
           <p className="text-xs uppercase tracking-[0.2em]">Layout B</p>
           <h3 className="mt-2 text-2xl font-bold">Split hero with secondary</h3>
-          <p className="mt-2 text-white/80">
+          <p className="mt-2" style={{ opacity: 0.9 }}>
             Content area inherits the text contrast you selected in the Colors section.
           </p>
           <button
@@ -134,13 +148,13 @@ const HeadersPreview = ({ colors }) => {
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
 const LayoutsPreview = ({ defaultGap }) => (
-  <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
-    <p className="text-sm font-semibold text-slate-600">3-Column Grid</p>
+  <div className="rounded-2xl p-6 shadow-sm" style={{ backgroundColor: 'var(--wp--preset--color--light)' }}>
+    <p className="text-sm font-semibold">3-Column Grid</p>
     <div
       className="mt-4 grid"
       style={{
@@ -151,11 +165,15 @@ const LayoutsPreview = ({ defaultGap }) => (
       {[1, 2, 3].map((col) => (
         <div
           key={col}
-          className="has-light-background-color rounded-xl border border-slate-200 p-4 shadow-sm"
-          style={{ boxShadow: 'var(--custom--shadow)', borderRadius: 'var(--custom--radius)' }}
+          className="has-light-background-color rounded-xl p-4 shadow-sm"
+          style={{
+            boxShadow: 'var(--custom--shadow)',
+            borderRadius: 'var(--custom--radius)',
+            border: '1px solid var(--wp--preset--color--light)'
+          }}
         >
           <h4 className="text-lg font-semibold">Column {col}</h4>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm">
             Gap uses spacing Step {defaultGap} configured in the sidebar.
           </p>
         </div>
@@ -169,8 +187,8 @@ const ComponentsPreview = ({ colors }) => {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
-        <p className="text-sm font-semibold text-slate-700">Buttons</p>
+      <div className="rounded-2xl p-4 shadow-sm" style={{ backgroundColor: 'var(--wp--preset--color--light)' }}>
+        <p className="text-sm font-semibold">Buttons</p>
         <div className="mt-3 flex flex-wrap gap-3">
           {buttons.map((color) => (
             <button
@@ -189,23 +207,24 @@ const ComponentsPreview = ({ colors }) => {
         </div>
       </div>
 
-      <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
-        <p className="text-sm font-semibold text-slate-700">Cards</p>
+      <div className="rounded-2xl p-4 shadow-sm" style={{ backgroundColor: 'var(--wp--preset--color--light)' }}>
+        <p className="text-sm font-semibold">Cards</p>
         <div className="mt-3 grid gap-4 md:grid-cols-3">
           {[1, 2, 3].map((card) => (
             <div
               key={card}
-              className="has-light-background-color border border-slate-200 p-4"
+              className="has-light-background-color p-4"
               style={{
                 boxShadow: 'var(--custom--shadow)',
                 borderRadius: 'var(--custom--radius)',
                 borderWidth: 'var(--custom--border-width)',
-                borderStyle: 'var(--custom--border-style)'
+                borderStyle: 'var(--custom--border-style)',
+                borderColor: 'var(--wp--preset--color--light)'
               }}
             >
-              <p className="text-sm text-slate-600">Card {card}</p>
-              <h4 className="text-lg font-semibold text-slate-900">Design Tokens</h4>
-              <p className="mt-1 text-sm text-slate-600">
+              <p className="text-sm">Card {card}</p>
+              <h4 className="text-lg font-semibold">Design Tokens</h4>
+              <p className="mt-1 text-sm">
                 Borders and shadows mirror your custom tokens.
               </p>
             </div>
@@ -232,11 +251,7 @@ const PreviewTabs = ({ state, activeTab }) => {
     }
   };
 
-  return (
-    <div className="wp-block-group is-layout-constrained">
-      {renderContent()}
-    </div>
-  );
+  return <div className="wp-block-group is-layout-constrained vertical-space-small">{renderContent()}</div>;
 };
 
 export default PreviewTabs;
