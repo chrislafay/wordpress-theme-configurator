@@ -92,7 +92,7 @@ const ColorControls = ({ colors, onChange }) => {
   const locked = colors.filter((c) => c.locked);
 
   return (
-    <Accordion title="Colors" defaultOpen>
+    <Accordion id="colors" title="Colors" defaultOpen>
       <div className="space-y-3">
         {editable.map((color) => (
           <ColorRow

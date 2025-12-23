@@ -1,7 +1,7 @@
 import Accordion from './Accordion';
 
 const CustomStyles = ({ customStyles, onChange }) => (
-  <Accordion title="Custom Styles">
+  <Accordion id="custom-styles" title="Custom Styles">
     <div className="space-y-2">
       <label className="label">Shadow</label>
       <input

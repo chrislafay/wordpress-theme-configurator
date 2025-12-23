@@ -4,10 +4,45 @@ import { slugify } from '../utils/slugify';
 
 const STORAGE_KEY = 'wp-theme-architect';
 
+const mergeColors = (existing = [], template = []) => {
+  const merged = [...existing];
+  template.forEach((templateColor) => {
+    const found = merged.find((c) => c.slug === templateColor.slug);
+    if (!found) {
+      merged.push(templateColor);
+    }
+  });
+  return merged;
+};
+
+const normalizeDesignSystem = (data) => {
+  const next = { ...data };
+  next.colors = mergeColors(data.colors, initialDesignSystem.colors);
+  next.spacing = {
+    ...initialDesignSystem.spacing,
+    ...(data.spacing || {}),
+    steps: { ...(initialDesignSystem.spacing.steps || {}), ...(data.spacing?.steps || {}) },
+    contentSize: data.spacing?.contentSize || initialDesignSystem.spacing.contentSize,
+    wideSize: data.spacing?.wideSize || initialDesignSystem.spacing.wideSize
+  };
+  return next;
+};
+
+const normalizeState = (rawState) => {
+  if (!rawState || typeof rawState !== 'object') return { currentUser: null, projects: [] };
+  const projects = Array.isArray(rawState.projects)
+    ? rawState.projects.map((project) => ({
+        ...project,
+        data: normalizeDesignSystem(project.data || initialDesignSystem)
+      }))
+    : [];
+  return { currentUser: rawState.currentUser || null, projects };
+};
+
 const loadState = () => {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) return normalizeState(JSON.parse(raw));
   } catch (error) {
     console.warn('Failed to load saved state', error);
   }

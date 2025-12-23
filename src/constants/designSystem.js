@@ -28,7 +28,9 @@ export const initialDesignSystem = {
     { label: 'Secondary', slug: 'secondary', hex: '#1E293B', contrast: 'white' },
     { label: 'Tertiary', slug: 'tertiary', hex: '#F59E0B', contrast: 'black' },
     { label: 'Dark', slug: 'dark', hex: '#0F172A', contrast: 'white' },
+    { label: 'Dark Alt', slug: 'dark-alt', hex: '#1F2937', contrast: 'white' },
     { label: 'Light', slug: 'light', hex: '#F1F5F9', contrast: 'black' },
+    { label: 'Light Alt', slug: 'light-alt', hex: '#E2E8F0', contrast: 'black' },
     { label: 'Black', slug: 'black', hex: '#000000', contrast: 'white', locked: true },
     { label: 'White', slug: 'white', hex: '#FFFFFF', contrast: 'black', locked: true }
   ],

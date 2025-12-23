@@ -54,7 +54,7 @@ const TypographyControls = ({ typography, onChange }) => {
   };
 
   return (
-    <Accordion title="Typography">
+    <Accordion id="typography" title="Typography">
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
         <div className="space-y-2">
           <label className="label">Heading Font</label>

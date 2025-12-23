@@ -10,6 +10,7 @@ import StyleInjector from '../components/editor/StyleInjector';
 import PreviewTabs from '../components/editor/PreviewTabs';
 import { generateSCSS, generateThemeJson } from '../utils/exporters';
 import { slugify } from '../utils/slugify';
+import { AccordionProvider } from '../components/sidebar/Accordion';
 
 const cloneState = (data) =>
   typeof structuredClone === 'function' ? structuredClone(data) : JSON.parse(JSON.stringify(data));
@@ -153,25 +154,30 @@ const Editor = () => {
           </Link>
         </div>
 
-        <ColorControls
-          colors={editorState.colors}
-          onChange={(colors) => setEditorState((prev) => ({ ...prev, colors }))}
-        />
-        <TypographyControls
-          typography={editorState.typography}
-          onChange={(typography) => setEditorState((prev) => ({ ...prev, typography }))}
-        />
-        <SpacingControls
-          spacing={editorState.spacing}
-          onChange={(spacing) => setEditorState((prev) => ({ ...prev, spacing }))}
-        />
-        <CustomStyles
-          customStyles={editorState.customStyles}
-          onChange={(customStyles) => setEditorState((prev) => ({ ...prev, customStyles }))}
-        />
+        <AccordionProvider initialOpenId="colors">
+          <ColorControls
+            colors={editorState.colors}
+            onChange={(colors) => setEditorState((prev) => ({ ...prev, colors }))}
+          />
+          <TypographyControls
+            typography={editorState.typography}
+            onChange={(typography) => setEditorState((prev) => ({ ...prev, typography }))}
+          />
+          <SpacingControls
+            spacing={editorState.spacing}
+            onChange={(spacing) => setEditorState((prev) => ({ ...prev, spacing }))}
+          />
+          <CustomStyles
+            customStyles={editorState.customStyles}
+            onChange={(customStyles) => setEditorState((prev) => ({ ...prev, customStyles }))}
+          />
+        </AccordionProvider>
       </aside>
 
-      <main className="relative flex-1 overflow-y-auto">
+      <main
+        className="relative flex-1 overflow-y-auto"
+        style={{ backgroundColor: 'var(--wp--preset--color--light)' }}
+      >
         <div className="sticky top-0 z-10 border-b border-slate-200 bg-white/90 backdrop-blur">
           <div className="flex w-full items-center justify-between px-6 py-3">
             <span className="text-sm font-semibold text-slate-800">Live Preview</span>

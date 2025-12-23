@@ -14,7 +14,7 @@ const SpacingControls = ({ spacing, onChange }) => {
   };
 
   return (
-    <Accordion title="Spacing">
+    <Accordion id="spacing" title="Spacing">
       <div className="grid grid-cols-2 gap-3">
         {stepKeys.map((key) => (
           <div key={key} className="space-y-1">
@@ -43,21 +43,33 @@ const SpacingControls = ({ spacing, onChange }) => {
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-1">
-          <label className="label">Content Size (alignfull)</label>
+          <label className="label">Content Size (px)</label>
           <input
             className="input"
-            value={spacing.contentSize}
-            onChange={(e) => onChange({ ...spacing, contentSize: e.target.value })}
-            placeholder="1140px"
+            type="number"
+            value={parseInt(spacing.contentSize, 10) || ''}
+            onChange={(e) =>
+              onChange({
+                ...spacing,
+                contentSize: e.target.value ? `${e.target.value}px` : ''
+              })
+            }
+            placeholder="1140"
           />
         </div>
         <div className="space-y-1">
-          <label className="label">Wide Size (alignwide)</label>
+          <label className="label">Wide Size (px)</label>
           <input
             className="input"
-            value={spacing.wideSize}
-            onChange={(e) => onChange({ ...spacing, wideSize: e.target.value })}
-            placeholder="1140px"
+            type="number"
+            value={parseInt(spacing.wideSize, 10) || ''}
+            onChange={(e) =>
+              onChange({
+                ...spacing,
+                wideSize: e.target.value ? `${e.target.value}px` : ''
+              })
+            }
+            placeholder="1140"
           />
         </div>
       </div>
